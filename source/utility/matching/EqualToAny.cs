@@ -21,7 +21,11 @@ namespace code.utility.matching
     {
       return extension_point.create(EqualToAny.values(values));
     }
+        public static IEnumerable<Item> equal_to_any<Item, Property>(this LoadedMatchingExtensionPoint<Item, Property> extension_point, params Property[] values)
+        {
+            var criteria = equal_to_any(extension_point, values);
+            return extension_point.items.filter_using(criteria);
+        }
 
-    
-  }
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using code.utility.matching;
+using Machine.Specifications.Sdk;
 
 namespace code.utility
 {
@@ -38,6 +39,13 @@ namespace code.utility
 
       return result;
     }
+
+      public static LoadedMatchingExtensionPoint<ItemToMatch, Property> filter<ItemToMatch, Property>(
+          this IEnumerable<ItemToMatch> items,
+          IGetTheValueOfAProperty<ItemToMatch, Property> get_the_value_of_a_property)
+      {
+          return Match<ItemToMatch>.with_attribute(get_the_value_of_a_property);
+      }
   }
 
   public delegate Element ElementAccumulator<Element, Value>(Element accumulator, Value stepValue);
