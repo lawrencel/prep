@@ -8,28 +8,17 @@ namespace code.utility.matching
 {
     public class Range
     {        
+        //build range types instead of criteria
         public static Criteria<Value> starting_with<Value>(Value value, bool inclusive = false)
             where Value : IComparable<Value>
         {
-            return x =>
-            {
-                var result = GreaterThan.value(value)(x);
-                if (!result && inclusive)
-                    result = value.CompareTo(x) == 0;
-                return result;
-            };
+            return x => GreaterThan.value(value)(x) || (inclusive && EqualToAny.values(value)(x));
         }
 
         public static Criteria<Value> ending_with<Value>(Value value, bool inclusive = false)
     where Value : IComparable<Value>
         {
-            return x =>
-            {
-                var result = LessThan.value(value)(x);
-                if (!result && inclusive)
-                    result = value.CompareTo(x) == 0;
-                return result;
-            };
+            return x => LessThan.value(value)(x) || (inclusive && EqualToAny.values(value)(x));
         }
     }
 
@@ -44,6 +33,11 @@ namespace code.utility.matching
             where Value : IComparable<Value>
         {
             return Range.ending_with(value, inclusive);
+        }
+
+        public static Criteria<Item> falls_in<Item, Property>(this IProvideAccessToMatchBuilders<Item, Property> extension_point, Criteria<Property> rangeCriteria) where Property : IComparable<Property>
+        {
+            return extension_point.create(rangeCriteria);
         }
     }
 }
