@@ -220,19 +220,18 @@ namespace code.prep.movies
         results.ShouldNotContain(cars, a_bugs_life);
       };
 
-      It finds_all_movies_published_after_a_certain_year = () =>
-      {
-        var criteria = Match<Movie>.with_attribute(x => x.date_published).greater_than(2004);
+        private It finds_all_movies_published_after_a_certain_year = () =>
+        {
+            var criteria = Match<Movie>.with_attribute(x => x.date_published.Year).falls_in(Range.starting_with(2004));
 
         var results = sut.all().filter_using(criteria);
 
         results.ShouldContainOnly(yours_mine_and_ours, shrek, theres_something_about_mary);
       };
 
-      It finds_all_movies_published_between_a_certain_range_of_years = () =>
+        private It finds_all_movies_published_between_a_certain_range_of_years = () =>
       {
-        var criteria = Match<Movie>.with_attribute(x => x.date_published.Year).between(1982,2003);
-
+        var criteria = Match<Movie>.with_attribute(x => x.date_published.Year).falls_in(Range.starting_with(1982, true).ending_with(2003, true));
         var results = sut.all().filter_using(criteria);
 
         results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, a_bugs_life, pirates_of_the_carribean);
