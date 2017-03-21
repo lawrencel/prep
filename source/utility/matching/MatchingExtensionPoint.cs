@@ -10,7 +10,9 @@
       this.accessor = accessor;
     }
 
-    public IProvideAccessToMatchBuilders<ItemToMatch, Property,Criteria<ItemToMatch>> not
+        //whats the simpliest way to test this?
+        //does it return a NegatingMatchingExtensionPoint with reference to the original?
+        public IProvideAccessToMatchBuilders<ItemToMatch, Property,Criteria<ItemToMatch>> not
     {
       get { return new NegatingMatchingExtensionPoint(this); }
     }
