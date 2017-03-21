@@ -7,11 +7,14 @@ namespace code.prep.movies
     public static class SortOrder
         
     {
-        public static ICompareTwoItems<Item> ascending<Item>(Item a, Item b) where Item : IComparable<Item>
+        public static int ascending<Item>(Item a, Item b) where Item : IComparable<Item>
         {
-            return x=> a.CompareTo(b);
-        } 
-        public static IApplyComparison<Item> descending<Item>(Item a, Item b) where Item : IComparable<Item> { return new ReverseCompare<Item>(); }
+            return a.CompareTo(b);
+        }
+        public static int descending<Item>(Item a, Item b) where Item : IComparable<Item>
+        {
+            return b.CompareTo(a);
+        }
     }
 
     public interface IApplyComparison<Item>
