@@ -1,0 +1,57 @@
+﻿using System.Collections.Generic;
+
+namespace code.utility.matching
+{
+  public static class Match<Item>
+  {
+    public static MatchingExtensionPoint<Item, ItemProperty> with_attribute<ItemProperty>(
+      IGetTheValueOfAProperty<Item, ItemProperty> get_the_value_of_a_property)
+    {
+      return new MatchingExtensionPoint<Item, ItemProperty>(get_the_value_of_a_property);
+    }
+  }
+  public static class Filter<EnumerableOfItems, Item> where EnumerableOfItems : IEnumerable<Item>
+  {
+    public static FilterExtensionPoint<EnumerableOfItems, ItemProperty> filter<ItemProperty>(
+      IGetTheValueOfAProperty<Item, ItemProperty> get_the_value_of_a_property)
+    {
+      return new FilterExtensionPoint<ItemToMatch, ItemProperty>(get_the_value_of_a_property);
+    }
+  }
+
+    public class FilterExtensionPoint<Item, ItemProperty> : IProvideAccessToFilterBuilders<Item, ItemProperty>
+    {
+        IGetTheValueOfAProperty<Item, ItemProperty> accessor { get; }
+
+
+        public MatchingExtensionPoint(IGetTheValueOfAProperty<Item, ItemProperty> accessor)
+        {
+            this.accessor = accessor;
+        }
+
+        public IProvideAccessToMatchBuilders<Item, ItemProperty> not
+        {
+            get { return new NegatingMatchingExtensionPoint(this); }
+        }
+
+        class NegatingMatchingExtensionPoint : IProvideAccessToMatchBuilders<Item, ItemProperty>
+        {
+            IProvideAccessToMatchBuilders<Item, ItemProperty> original;
+
+            public NegatingMatchingExtensionPoint(IProvideAccessToMatchBuilders<Item, ItemProperty> original)
+            {
+                this.original = original;
+            }
+
+            public Criteria<Item> create(Criteria<ItemProperty> value_matcher)
+            {
+                return original.create(value_matcher).not();
+            }
+        }
+
+        public Criteria<Item> create(Criteria<ItemProperty> value_matcher)
+        {
+            return x => value_matcher(accessor(x));
+        }
+    }
+}
