@@ -15,6 +15,7 @@ namespace code.prep.people
 
       Establish c = () =>
       {
+          //automatically injects dependency
         connection = depends.on<IDbConnection>();
       };
     }
