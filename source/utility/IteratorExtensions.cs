@@ -3,6 +3,7 @@ using code.utility.matching;
 
 namespace code.utility
 {
+    //strategy. allow passed parameter to be swapped out
   public delegate int ICompareTwoItems<Item>(Item first, Item second);
 
   public static class IteratorExtensions

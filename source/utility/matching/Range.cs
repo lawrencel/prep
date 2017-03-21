@@ -2,6 +2,7 @@
 
 namespace code.utility.matching
 {
+    //abstract factory to create range criteria
   public static class Range
   {
     delegate Criteria<Value> IBuildARangeMatcher<in Value>(Value value);

@@ -4,6 +4,7 @@ namespace code.utility.sorting
 {
   public class Sort<Item>
   {
+        //composite
     public static ICompareTwoItems<Item> by<Property>(IGetTheValueOfAProperty<Item, Property> accessor,
       ICompareTwoItems<Property> order)
       where Property : IComparable<Property>

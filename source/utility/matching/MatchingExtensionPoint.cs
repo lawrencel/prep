@@ -15,6 +15,7 @@
       get { return new NegatingMatchingExtensionPoint(this); }
     }
 
+        //decorator
     class NegatingMatchingExtensionPoint : IProvideAccessToMatchBuilders<ItemToMatch, Property, Criteria<ItemToMatch>>
     {
       IProvideAccessToMatchBuilders<ItemToMatch, Property, Criteria<ItemToMatch>> original;
@@ -32,6 +33,7 @@
 
     public Criteria<ItemToMatch> create(Criteria<Property> value_matcher)
     {
+            //tell don't ask
       return x => value_matcher(accessor(x));
     }
   }

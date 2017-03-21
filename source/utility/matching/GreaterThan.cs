@@ -9,11 +9,12 @@ namespace code.utility.matching
       return x => x.CompareTo(value) > 0;
     }
   }
-
+    //abstract factory
   public static class GreaterThanMatchingExtensions
   {
     public static ReturnType greater_than<Item,Property, ReturnType>(this IProvideAccessToMatchBuilders<Item,Property, ReturnType> extension_point, Property value) where Property : IComparable<Property>
     {
+            //strategy
       return extension_point.create(GreaterThan.value(value));
     }
 

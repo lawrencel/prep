@@ -4,6 +4,8 @@ namespace code.utility.sorting
 {
   public static class SortExtensions
   {
+        //composite, combines two ICompareTwoItems into one
+
     public static ICompareTwoItems<Item> then_by<Item, Property>(this ICompareTwoItems<Item> previous_comparer,
       IGetTheValueOfAProperty<Item, Property> accessor, ICompareTwoItems<Property> order)
       where Property : IComparable<Property>
