@@ -4,11 +4,43 @@ using code.utility.matching;
 
 namespace code.prep.movies
 {
-  public class Sort<Item>
-  {
-    public static ICompareTwoItems<Item> by<Property>(IGetTheValueOfAProperty<Item, Property> accessor) where Property : IComparable<Property>
+    public static class SortOrder
+        
     {
-      return (a, b) => accessor(a).CompareTo(accessor(b));
+        public static ICompareTwoItems<Item> ascending<Item>(Item a, Item b) where Item : IComparable<Item>
+        {
+            return x=> a.CompareTo(b);
+        } 
+        public static IApplyComparison<Item> descending<Item>(Item a, Item b) where Item : IComparable<Item> { return new ReverseCompare<Item>(); }
+    }
+
+    public interface IApplyComparison<Item>
+    {
+        ICompareTwoItems<Item> applyComparison();
+    }
+
+    public class RegularCompare<Item> : IApplyComparison<Item>
+        where Item: IComparable<Item>
+    {
+        public ICompareTwoItems<Item> applyComparison()
+        {
+            return (first, second) => first.CompareTo(second);
+        }
+    }
+
+    public class ReverseCompare<Item> : IApplyComparison<Item>
+        where Item : IComparable<Item>
+    {
+        public ICompareTwoItems<Item> applyComparison()
+        {
+            return (first, second) => second.CompareTo(first);
+        }
+    }
+    public class Sort<Item>
+  {
+    public static ICompareTwoItems<Item> by<Property>(IGetTheValueOfAProperty<Item, Property> accessor, ICompareTwoItems<Property> orderer) where Property : IComparable<Property>
+    {
+      return (first, second) => orderer(accessor(first), accessor(second));
     }
 
     public static ICompareTwoItems<Item> by<Property>(IGetTheValueOfAProperty<Item, Property> accessor, params Property[] sort_order)
