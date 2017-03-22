@@ -2,9 +2,16 @@
 {
   public class FrontController
   {
-    public void run(IProvideDetailsAboutAWebRequest request)
-    {
-      throw new System.NotImplementedException();
-    }
+      private readonly IFindACommandThatCanHandleARequest _commands;
+
+      public FrontController(IFindACommandThatCanHandleARequest commands)
+      {
+          _commands = commands;
+      }
+
+      public void run(IProvideDetailsAboutAWebRequest request)
+      {
+          _commands.get_command_that_can_handle(request);
+      }
   }
 }
