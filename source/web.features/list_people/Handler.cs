@@ -2,9 +2,17 @@
 {
   public class Handler : IImplementAUserStory
   {
-    public void process(IProvideDetailsAboutAWebRequest request)
-    {
-      throw new System.NotImplementedException();
-    }
+      private readonly  IFetchData _dataFetcher;
+
+      public Handler(IFetchData dataFetcher)
+      {
+            _dataFetcher = dataFetcher;
+      }
+
+
+      public void process(IProvideDetailsAboutAWebRequest request)
+      {
+          _dataFetcher.get_all_people();
+      }
   }
 }
