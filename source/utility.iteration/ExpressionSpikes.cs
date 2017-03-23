@@ -35,6 +35,7 @@ namespace code.utility.iteration
         Expression<IGetTheValueOfAProperty<Person, string>> code_as_data = x => x.first_name;
 
         IGetTheValueOfAProperty<Person, string> accessor = code_as_data.Compile();
+
         accessor(person).ShouldEqual(person.first_name);
       };
 
