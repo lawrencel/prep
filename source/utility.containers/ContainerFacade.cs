@@ -20,7 +20,8 @@ namespace code.utility.containers
 
     public object an(Type type_to_fetch)
     {
-      throw new NotImplementedException();
+        var factory = factory_registry.get_factory_that_can_create(type_to_fetch);
+        return factory.create();
     }
   }
 }
