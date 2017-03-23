@@ -7,7 +7,7 @@ namespace code.utility.iteration
   {
     public static void process_all_using<Element>(this IEnumerable<Element> items, IProcessAn<Element> visitor)
     {
-      
+        items.each_for_all(element => visitor.process(element));
     }
 
     public static void each_for_all<Element>(this IEnumerable<Element> items, ExhaustiveElementVisitor<Element> visitor)
