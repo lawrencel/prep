@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using code.utility.visitors;
 using developwithpassion.specifications.assertions.core;
 using developwithpassion.specifications.assertions.interactions;
 using developwithpassion.specifications.extensions;
@@ -24,14 +25,14 @@ namespace code.utility.containers
             {
                 requestedType = typeof(SomeFunnyType);
                 dependencyCreators = depends.@on<IEnumerable<ICreateOneDependency>>();
-                expectedDependencyCreator = dependencyCreators.First();                
+                expectedDependencyCreator = dependencyCreators.Last();                
                 expectedDependencyCreator.setup(x => x.canCreate(requestedType)).Return(true);            
             };
 
             private Because b = () =>
                 sut.get_factory_that_can_create(requestedType);
 
-            It should_have_returned_expected_dependency_creator = () =>
+            It returns_expected_dependency_creator = () =>
                 result.ShouldEqual(expectedDependencyCreator);                
 
             private static IEnumerable<ICreateOneDependency> dependencyCreators;
