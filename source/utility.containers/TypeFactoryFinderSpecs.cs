@@ -19,9 +19,9 @@ namespace code.utility.containers
 
         }
 
-        public class when_getting_resolver_for_type : concern
+        public class when_getting_resolver_for_non_Iterator_type : concern
         {
-            private Establish e = () =>
+            Establish e = () =>
             {
                 requestedType = typeof(SomeFunnyType);
                 dependencyCreators = depends.@on<IEnumerable<ICreateOneDependency>>();
@@ -29,8 +29,8 @@ namespace code.utility.containers
                 expectedDependencyCreator.setup(x => x.canCreate(requestedType)).Return(true);            
             };
 
-            private Because b = () =>
-                sut.get_factory_that_can_create(requestedType);
+            Because b = () =>
+                result = sut.get_factory_that_can_create(requestedType);
 
             It returns_expected_dependency_creator = () =>
                 result.ShouldEqual(expectedDependencyCreator);                
@@ -39,6 +39,38 @@ namespace code.utility.containers
             private static ICreateOneDependency expectedDependencyCreator;
             private static Type requestedType;
             private static ICreateOneDependency result;
+        }
+
+        public class when_getting_resolver_for_Iterator_type : concern
+        {
+            Establish e = () =>
+            {
+                requestedType = typeof(IEnumerable<SomeFunnyType>);
+                dependencyCreators = depends.@on<IEnumerable<ICreateOneDependency>>();
+                dependencyCreators.Last().setup(x => x.canCreate(requestedType)).Return(true);
+                dependencyCreators.First().setup(x => x.canCreate(requestedType)).Return(true);
+
+                expectedDependencyCreator = new List<ICreateOneDependency>()
+                {
+                    dependencyCreators.First(),
+                    dependencyCreators.Last()
+                };
+            };
+
+            Because b = () =>
+                result = sut.get_factory_that_can_create(requestedType);
+
+            private It returns_expeced_dependencyCreators = () =>
+                (result as IEnumerable<SomeFunnyType>).each_for_all(
+                    element => expectedDependencyCreator.ShouldContain(element));
+
+            It returns_IEnumerable_of_SomeFunnyType = () =>
+                result.ShouldBeAssignableTo(typeof(IEnumerable<SomeFunnyType>));
+
+            private static IEnumerable<ICreateOneDependency> dependencyCreators;
+            private static Type requestedType;
+            private static ICreateOneDependency result;
+            private static IEnumerable<ICreateOneDependency> expectedDependencyCreator;
         }
 
         public class SomeFunnyType
